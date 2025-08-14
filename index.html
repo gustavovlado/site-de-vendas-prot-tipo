@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SkillForge – Domine 3D, Animação e Design</title>
+  <meta name="description" content="Plataforma moderna para aprender modelagem 3D, animação, edição e design. Cursos práticos, projetos reais e comunidade ativa." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0d13;           /* Fundo principal (escuro elegante) */
+      --bg-soft:#111521;      /* Cartões/elementos */
+      --text:#e6eaf2;         /* Texto principal */
+      --muted:#a5b0c2;        /* Texto secundário */
+      --primary:#39c6f4;      /* Ciano tech */
+      --primary-700:#1598c5;
+      --accent:#ff9f43;       /* Laranja criação/forja */
+      --success:#35d0a5;
+      --danger:#ff6b6b;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{width:min(1140px, 92vw);margin-inline:auto}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;border:none;border-radius:999px;padding:.9rem 1.2rem;font-weight:700;cursor:pointer;transition:.25s ease;background:linear-gradient(135deg,var(--primary),#7be4ff);color:#081018;box-shadow:0 6px 18px rgba(57,198,244,.25);}  
+    .btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(57,198,244,.35);} 
+    .btn--ghost{background:transparent;border:1px solid rgba(230,234,242,.15);color:var(--text)}
+    .btn--ghost:hover{border-color:rgba(230,234,242,.35);}
+    .badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .65rem;border-radius:999px;background:rgba(57,198,244,.12);color:var(--primary);font-weight:700;font-size:.75rem;letter-spacing:.02em;border:1px solid rgba(57,198,244,.28)}
+
+    /* Navbar */
+    .nav{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#0b0d13 0%, rgba(11,13,19,.8) 75%, rgba(11,13,19,0) 100%);backdrop-filter:saturate(160%) blur(8px);}
+    .nav__wrap{display:flex;align-items:center;justify-content:space-between;padding:1rem 0}
+    .brand{display:flex;align-items:center;gap:.75rem}
+    .logo{width:36px;height:36px;border-radius:12px;background:conic-gradient(from 210deg at 50% 50%, var(--accent), var(--primary));position:relative;box-shadow:0 8px 22px rgba(0,0,0,.4);} 
+    .logo:before{content:"";position:absolute;inset:5px;border-radius:9px;background:radial-gradient(60% 60% at 30% 30%, rgba(255,255,255,.35), transparent 55%)}
+    .brand__name{font-weight:800;letter-spacing:.2px}
+    .nav__links{display:flex;align-items:center;gap:1.2rem}
+    .nav__links a{opacity:.88}
+    .nav__links a:hover{opacity:1}
+    .nav__cta{display:flex;align-items:center;gap:.8rem}
+    .hamb{display:none}
+
+    /* Hero */
+    .hero{position:relative;padding:clamp(70px, 8vw, 120px) 0 72px;overflow:hidden}
+    .glow{position:absolute;inset:-20%;background:radial-gradient(60% 40% at 20% 10%, rgba(57,198,244,.18), transparent 55%),radial-gradient(65% 45% at 80% 20%, rgba(255,159,67,.18), transparent 55%);filter:blur(30px);pointer-events:none}
+    .hero__grid{display:grid;grid-template-columns: 1.1fr .9fr;gap:48px;align-items:center}
+    .hero h1{font-size:clamp(2rem, 4.4vw, 3.5rem);line-height:1.05;margin:0 0 12px}
+    .hero p{color:var(--muted);font-size:clamp(1rem, 1.3vw, 1.125rem)}
+    .hero__cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+    .hero__card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));border:1px solid rgba(230,234,242,.07);box-shadow:var(--shadow);border-radius:var(--radius);padding:18px;display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:center}
+    .hero__card .ph{width:72px;height:72px;border-radius:16px;background:linear-gradient(135deg, rgba(57,198,244,.18), rgba(255,159,67,.18));border:1px dashed rgba(230,234,242,.14)}
+    .hero__chip{display:inline-flex;gap:.4rem;align-items:center;font-size:.8rem;color:var(--muted)}
+
+    /* Stats */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px}
+    .stat{background:var(--bg-soft);border:1px solid rgba(230,234,242,.06);border-radius:16px;padding:16px 18px}
+    .stat h3{margin:0;font-size:1.6rem}
+    .stat p{margin:.25rem 0 0;color:var(--muted);font-size:.9rem}
+
+    /* Sections */
+    section{padding:74px 0}
+    .section__head{display:flex;align-items:end;justify-content:space-between;margin-bottom:28px;gap:24px}
+    .section__title{margin:0;font-size:clamp(1.6rem, 3.2vw, 2.2rem)}
+    .section__desc{color:var(--muted);max-width:680px}
+
+    /* Features */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));border:1px solid rgba(230,234,242,.07);border-radius:18px;padding:20px;box-shadow:var(--shadow);transition:.25s}
+    .card:hover{transform:translateY(-4px);border-color:rgba(230,234,242,.16)}
+    .card__icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg, rgba(57,198,244,.25), rgba(255,159,67,.25));display:grid;place-items:center;margin-bottom:12px}
+    .card h4{margin:.25rem 0 .25rem}
+    .card p{color:var(--muted)}
+
+    /* Showcase */
+    .showcase{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+    .panel{border-radius:18px;border:1px solid rgba(230,234,242,.07);background:radial-gradient(100% 120% at 0% 0%, rgba(57,198,244,.12), transparent 55%),linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));padding:18px;min-height:320px}
+    .panel--img{display:grid;place-items:center}
+    .panel--img .ph{width:100%;height:280px;border-radius:14px;border:1px dashed rgba(230,234,242,.15);background:repeating-linear-gradient(135deg, rgba(57,198,244,.12) 0 10px, rgba(255,159,67,.14) 10px 20px)}
+
+    /* Pricing */
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .price{position:relative;overflow:hidden}
+    .price__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .price h4{margin:.2rem 0}
+    .price .value{font-size:2.4rem;font-weight:800;margin:.25rem 0}
+    .price ul{list-style:none;padding:0;margin:12px 0 0;color:var(--muted)}
+    .price li{display:flex;gap:.6rem;align-items:center;margin:.5rem 0}
+    .price .tag{position:absolute;top:16px;right:-40px;transform:rotate(35deg);background:var(--accent);color:#111;padding:.3rem 2.6rem;font-size:.75rem;font-weight:800}
+
+    .toggle{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem;border-radius:999px;border:1px solid rgba(230,234,242,.12)}
+    .toggle button{padding:.4rem .75rem;border-radius:999px;border:none;background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
+    .toggle button.active{background:rgba(57,198,244,.15);color:var(--text)}
+
+    /* Curriculum */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .step{display:flex;gap:12px;align-items:flex-start}
+    .step__num{min-width:34px;height:34px;border-radius:10px;background:rgba(57,198,244,.2);display:grid;place-items:center;font-weight:800}
+
+    /* FAQ */
+    .faq{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .accordion{border-radius:14px;border:1px solid rgba(230,234,242,.08);background:rgba(255,255,255,.02)}
+    .accordion summary{list-style:none;cursor:pointer;padding:16px 18px;font-weight:700}
+    .accordion p{padding:0 18px 18px;color:var(--muted)}
+
+    /* CTA */
+    .cta{position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(135deg, rgba(57,198,244,.22), rgba(255,159,67,.22));border:1px solid rgba(230,234,242,.14);box-shadow:var(--shadow);padding:28px}
+
+    /* Footer */
+    footer{padding:40px 0;color:var(--muted);border-top:1px solid rgba(230,234,242,.08)}
+    .footer__grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+    .social{display:flex;gap:10px}
+    .chip{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .65rem;border-radius:999px;background:rgba(230,234,242,.06);color:var(--text);border:1px solid rgba(230,234,242,.12)}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero__grid,.showcase,.features,.pricing,.faq,.grid-2,.stats,.footer__grid{grid-template-columns:1fr}
+      .nav__links{display:none}
+      .hamb{display:block;background:transparent;border:1px solid rgba(230,234,242,.16);padding:.55rem .7rem;border-radius:10px;color:var(--text)}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="container nav__wrap">
+      <a href="#home" class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <span class="brand__name">SkillForge</span>
+      </a>
+      <div class="nav__links" role="navigation" aria-label="Navegação primária">
+        <a href="#cursos">Cursos</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#planos">Planos</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="nav__cta">
+        <a href="#login" class="btn btn--ghost">Entrar</a>
+        <a href="#planos" class="btn">Começar agora</a>
+        <button class="hamb" id="hamb">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" id="home">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="container hero__grid">
+      <div>
+        <span class="badge">Aprenda habilidades do futuro</span>
+        <h1>Domine <span style="background:linear-gradient(90deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent">3D, Animação e Design</span> com projetos reais</h1>
+        <p>Na SkillForge, você evolui criando. Cursos práticos, feedback de profissionais e uma comunidade para acelerar seu portfólio. Tudo em um só lugar.</p>
+        <div class="hero__cta">
+          <a class="btn" href="#planos">Ver Planos</a>
+          <a class="btn btn--ghost" href="#cursos">Explorar Cursos</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><h3 id="st1">0</h3><p>Alunos ativos</p></div>
+          <div class="stat"><h3 id="st2">0</h3><p>Projetos concluídos</p></div>
+          <div class="stat"><h3 id="st3">0</h3><p>Horas de conteúdo</p></div>
+          <div class="stat"><h3 id="st4">0</h3><p>Instrutores</p></div>
+        </div>
+      </div>
+      <div class="hero__card">
+        <div class="ph" aria-hidden="true"></div>
+        <div>
+          <div class="hero__chip">📦 Placeholder • troque pela sua imagem/arte principal</div>
+          <h3 style="margin:.2rem 0">Aprendizado baseado em projetos</h3>
+          <p style="color:var(--muted);margin:0">Cada módulo resulta em uma peça real para o portfólio: modelagem 3D, animações, banners e logos prontos para apresentar a clientes.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section id="recursos">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title">Por que a SkillForge?</h2>
+        <p class="section__desc">Conteúdos atualizados, materiais exclusivos e uma comunidade que puxa você para cima. Tudo para acelerar sua entrada no mercado criativo.</p>
+      </div>
+      <div class="features">
+        <article class="card">
+          <div class="card__icon">🧱</div>
+          <h4>Projetos Reais</h4>
+          <p>Você aprende fazendo: personagens, hard surface, motion, banners e identidades visuais.</p>
+        </article>
+        <article class="card">
+          <div class="card__icon">🎒</div>
+          <h4>Recursos Exclusivos</h4>
+          <p>Modelos 3D, texturas, LUTs, templates e fontes liberadas para uso nos seus projetos.</p>
+        </article>
+        <article class="card">
+          <div class="card__icon">🧭</div>
+          <h4>Trilha Guiada</h4>
+          <p>Do zero ao avançado: fundações, domínio técnico e especializações (3D, Animação, Edição e Branding).</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWCASE / CURSOS -->
+  <section id="cursos">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title">Catálogo de Cursos</h2>
+        <p class="section__desc">Troque as áreas cinzas por thumbnails reais quando enviar as imagens. Cada cartão pode levar a uma página interna.</p>
+      </div>
+      <div class="showcase" style="margin-bottom:18px">
+        <div class="panel">
+          <h3 style="margin-top:0">Trilhas de Aprendizado</h3>
+          <div class="grid-2" style="margin-top:8px">
+            <div class="card">
+              <h4>Modelagem 3D (Blender)</h4>
+              <p>Topologias, UV, texturização e render. Projeto final: personagem ou produto.</p>
+              <a class="btn btn--ghost" href="#">Ver grade</a>
+            </div>
+            <div class="card">
+              <h4>Animação 3D</h4>
+              <p>Rigging, keyframes, princípios de animação e simulações.</p>
+              <a class="btn btn--ghost" href="#">Ver grade</a>
+            </div>
+            <div class="card">
+              <h4>Edição & Motion</h4>
+              <p>Workflow para social media, efeitos e storytelling visual.</p>
+              <a class="btn btn--ghost" href="#">Ver grade</a>
+            </div>
+            <div class="card">
+              <h4>Branding & Logos</h4>
+              <p>Processo de identidade visual com guias e apresentações.</p>
+              <a class="btn btn--ghost" href="#">Ver grade</a>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel--img">
+          <div class="ph" aria-hidden="true"></div>
+          <p class="hero__chip" style="margin-top:10px">🖼️ Placeholder • banner do curso destaque</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h4>Como funciona</h4>
+          <div class="step"><span class="step__num">1</span><div><strong>Assine</strong><br><span class="muted">Acesso imediato a todo o catálogo</span></div></div>
+          <div class="step"><span class="step__num">2</span><div><strong>Escolha a trilha</strong><br><span class="muted">Do básico ao avançado</span></div></div>
+          <div class="step"><span class="step__num">3</span><div><strong>Faça projetos</strong><br><span class="muted">Portfólio construído no processo</span></div></div>
+          <div class="step"><span class="step__num">4</span><div><strong>Receba feedback</strong><br><span class="muted">Comunidade e mentores</span></div></div>
+        </div>
+        <div class="card">
+          <h4>Para empresas</h4>
+          <p>Treinamentos sob demanda com dashboard de progresso e relatórios de performance para equipes criativas.</p>
+          <a class="btn" href="#contato">Solicitar proposta</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="planos">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h2 class="section__title">Planos e Preços</h2>
+          <p class="section__desc">Alterne entre mensal e anual. Valores são exemplos; ajuste conforme sua estratégia.</p>
+        </div>
+        <div class="toggle" role="tablist" aria-label="Alternar periodicidade">
+          <button class="active" data-billing="mensal" aria-selected="true">Mensal</button>
+          <button data-billing="anual" aria-selected="false">Anual <span class="chip">-20%</span></button>
+        </div>
+      </div>
+
+      <div class="pricing">
+        <article class="card price" data-plan="starter">
+          <div class="price__top">
+            <h4>Starter</h4>
+            <span class="chip">Comece hoje</span>
+          </div>
+          <div class="value" data-value>R$ 39/mês</div>
+          <p style="color:var(--muted)">Para iniciantes que querem experimentar.</p>
+          <ul>
+            <li>✔️ Acesso a cursos básicos</li>
+            <li>✔️ Recursos selecionados</li>
+            <li>✔️ Comunidade</li>
+            <li>— Mentorias</li>
+          </ul>
+          <a class="btn" href="#checkout">Assinar</a>
+        </article>
+
+        <article class="card price" data-plan="pro">
+          <div class="price__top">
+            <h4>Pro</h4>
+            <span class="tag">MAIS POPULAR</span>
+          </div>
+          <div class="value" data-value>R$ 79/mês</div>
+          <p style="color:var(--muted)">Para quem quer dominar e criar portfólio forte.</p>
+          <ul>
+            <li>✔️ Todo o catálogo</li>
+            <li>✔️ Recursos premium</li>
+            <li>✔️ Desafios mensais</li>
+            <li>✔️ Certificados</li>
+          </ul>
+          <a class="btn" href="#checkout">Assinar</a>
+        </article>
+
+        <article class="card price" data-plan="empresas">
+          <div class="price__top">
+            <h4>Empresas</h4>
+            <span class="chip">Sob medida</span>
+          </div>
+          <div class="value" data-value>R$ 199/mês</div>
+          <p style="color:var(--muted)">Gestão de equipe, relatórios e trilhas customizadas.</p>
+          <ul>
+            <li>✔️ Acesso para equipes</li>
+            <li>✔️ Dashboard e relatórios</li>
+            <li>✔️ Mentorias em grupo</li>
+            <li>✔️ Suporte prioritário</li>
+          </ul>
+          <a class="btn" href="#contato">Falar com vendas</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title">Perguntas Frequentes</h2>
+        <p class="section__desc">Algumas dúvidas comuns antes de começar.</p>
+      </div>
+      <div class="faq">
+        <details class="accordion">
+          <summary>Os cursos têm pré-requisitos?</summary>
+          <p>As trilhas começam do zero. Indicamos um computador com desempenho razoável para 3D.</p>
+        </details>
+        <details class="accordion">
+          <summary>Posso cancelar quando quiser?</summary>
+          <p>Sim. A assinatura é recorrente e você pode cancelar a qualquer momento.</p>
+        </details>
+        <details class="accordion">
+          <summary>Recebo certificado?</summary>
+          <p>Sim, ao concluir cada trilha você recebe um certificado de conclusão.</p>
+        </details>
+        <details class="accordion">
+          <summary>Existe plano para empresas?</summary>
+          <p>Sim. Oferecemos pacotes para equipes com dashboard e relatórios.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="container">
+      <div class="cta">
+        <h3 style="margin:0 0 .4rem">Pronto para forjar suas habilidades?</h3>
+        <p style="margin:0 0 1rem;color:var(--muted)">Comece hoje com a SkillForge e publique seu primeiro projeto em poucos dias.</p>
+        <a class="btn" href="#planos">Quero começar</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title">Fale com a gente</h2>
+        <p class="section__desc">Para parcerias, empresas e dúvidas comerciais.</p>
+      </div>
+      <div class="grid-2">
+        <form class="card" onsubmit="event.preventDefault(); alert('Formulário de exemplo enviado!');">
+          <div style="display:grid;gap:12px">
+            <label>Nome<br><input type="text" required placeholder="Seu nome" style="width:100%;padding:.8rem;border-radius:10px;border:1px solid rgba(230,234,242,.12);background:#0e1220;color:var(--text)"></label>
+            <label>E-mail<br><input type="email" required placeholder="voce@email.com" style="width:100%;padding:.8rem;border-radius:10px;border:1px solid rgba(230,234,242,.12);background:#0e1220;color:var(--text)"></label>
+            <label>Mensagem<br><textarea rows="4" placeholder="Como podemos ajudar?" style="width:100%;padding:.8rem;border-radius:10px;border:1px solid rgba(230,234,242,.12);background:#0e1220;color:var(--text)"></textarea></label>
+            <button class="btn" type="submit">Enviar</button>
+          </div>
+        </form>
+        <div class="card">
+          <h4>Atendimento</h4>
+          <p style="color:var(--muted)">Resposta em até 1 dia útil. Suporte prioritário para empresas.</p>
+          <div class="social">
+            <span class="chip">✉️ contato@skillforge.com</span>
+            <span class="chip">💬 @skillforge</span>
+          </div>
+          <div style="height:14px"></div>
+          <h4>Endereço</h4>
+          <p style="color:var(--muted)">Operação remota • Brasil</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer__grid">
+      <div>
+        <div class="brand"><span class="logo" aria-hidden="true"></span><span class="brand__name">SkillForge</span></div>
+        <p style="margin:10px 0 0">Aprendizado criativo, prático e de verdade.</p>
+      </div>
+      <div style="display:flex;gap:18px;justify-content:flex-end;align-items:center">
+        <a href="#termos" class="muted">Termos</a>
+        <a href="#privacidade" class="muted">Privacidade</a>
+        <a href="#planos" class="btn btn--ghost">Assinar</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle (simples)
+    document.getElementById('hamb')?.addEventListener('click',()=>{
+      const links=document.querySelector('.nav__links');
+      links.style.display = (links.style.display==='flex') ? 'none':'flex';
+      links.style.flexDirection='column';
+      links.style.background='rgba(11,13,19,.96)';
+      links.style.position='absolute';
+      links.style.top='64px';
+      links.style.right='12px';
+      links.style.padding='12px';
+      links.style.border='1px solid rgba(230,234,242,.12)';
+      links.style.borderRadius='12px';
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id=a.getAttribute('href');
+        if(id && id !== '#'){
+          e.preventDefault();
+          document.querySelector(id)?.scrollIntoView({behavior:'smooth'});
+        }
+      });
+    });
+
+    // Stats counters (animação)
+    const targets = [{el:'#st1',val:1200},{el:'#st2',val:4800},{el:'#st3',val:260},{el:'#st4',val:24}];
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting){
+          targets.forEach(t=>{
+            const el=document.querySelector(t.el);
+            let c=0; const inc=Math.ceil(t.val/60);
+            const it=setInterval(()=>{c+=inc; if(c>=t.val){c=t.val;clearInterval(it);} el.textContent=c.toLocaleString('pt-BR');},16);
+          });
+          obs.disconnect();
+        }
+      })
+    },{threshold:.3});
+    obs.observe(document.querySelector('.stats'));
+
+    // Pricing toggle
+    const priceMap={
+      mensal:{starter:'R$ 39/mês',pro:'R$ 79/mês',empresas:'R$ 199/mês'},
+      anual:{starter:'R$ 374/ano',pro:'R$ 758/ano',empresas:'R$ 1.910/ano'}
+    };
+
+    document.querySelectorAll('.toggle button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.toggle button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const mode=btn.dataset.billing;
+        document.querySelectorAll('.price').forEach(card=>{
+          const key=card.dataset.plan;
+          card.querySelector('[data-value]').textContent = priceMap[mode][key];
+        })
+      })
+    })
+  </script>
+</body>
+</html>
