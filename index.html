@@ -236,44 +236,47 @@
             </div>
           </div>
         </div>
-        <div class="panel panel--img" style="overflow:hidden; border-radius:14px; display:flex; justify-content:center; align-items:center;">
-  <img src="modelagem.png" alt="Banner do curso destaque" style="width:100%; height:auto; object-fit:cover; display:block;">
+        <div class="panel panel--img" style="overflow:hidden; border-radius:14px; display:flex; justify-content:center; align-items:center; position:relative;">
+  <img src="modelagem.png" alt="Banner do curso destaque" class="banner-img">
+  <div class="hover-glow"></div>
 </div>
-        <div class="hover-glow" style="
-    position:absolute;
-    inset:0;
-    border-radius:14px;
-    pointer-events:none;
-    background: linear-gradient(120deg, rgba(57,198,244,0.2), rgba(255,159,67,0.2), rgba(57,198,244,0.2));
-    background-size: 200% 200%;
-    opacity:0;
-    transition: opacity 0.3s ease;
-  "></div>
-</div>
-
-<script>
-  const panel = document.querySelector('.panel--img');
-  const glow = panel.querySelector('.hover-glow');
-  const img = panel.querySelector('img');
-
-  panel.addEventListener('mouseenter', () => {
-    img.style.transform = 'scale(1.05)';
-    glow.style.opacity = '1';
-    glow.style.animation = 'glowMove 2s ease infinite';
-  });
-
-  panel.addEventListener('mouseleave', () => {
-    img.style.transform = 'scale(1)';
-    glow.style.opacity = '0';
-    glow.style.animation = 'none';
-  });
-</script>
 
 <style>
-  @keyframes glowMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  .panel--img {
+    position: relative;
+  }
+
+  .banner-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 14px;
+    transition: transform 0.3s ease;
+    z-index: 1;
+    position: relative;
+  }
+
+  .hover-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(57,198,244,0.25), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+
+  .panel--img:hover .banner-img {
+    transform: scale(1.05);
+  }
+
+  .panel--img:hover .hover-glow {
+    opacity: 1;
+    transform: rotate(20deg);
   }
 </style>
       </div>
